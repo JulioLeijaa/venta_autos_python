@@ -3,11 +3,13 @@ from Vehiculo import Vehiculo
 from Archivo import Archivo
 from MongoDB import Mongo
 from pymongo import MongoClient
+from MySQL import MySQL
+from SQLite import SQLite
 
 class Menu():
     def __init__(self):
         self.__venta = Venta()
-        self.__db = Mongo()
+        self.__db = MySQL()
     
     def pVenta(self):
         return input('¿Agregar un automóvil? (s/n): ')
@@ -49,7 +51,7 @@ class Menu():
 
     def imprimirEmpleado(self):
         print('---------------------')
-        print("Nombre: " + self.__venta.getEmpleado().getNombre() + " Salario: " + str(self.__venta.getEmpleado().getSalario()) + " Comision: " + str(self.__venta.getEmpleado().getComisiones()))
+        print("Nombre: " + self.__venta.getEmpleado().getNombre() + " Salario: " + str(self.__venta.getEmpleado().getSalario()) + " Comisiones: " + str(self.__venta.getEmpleado().getComisiones()) + " Bono: " + str(self.__venta.getEmpleado().getBono()))
         print('---------------------')
 
     def imprimirEmpleados(self):
@@ -62,6 +64,7 @@ class Menu():
     def imprimirNomina(self):
         print('---------------------')
         print('Nomina: ${0}'.format(self.__venta.getNomina()))
+        self.__db.cerrarConexion()
 
     def cargarArchivo(self):
         respuesta = input('¿Deseas cargar el archivo? (s/n): ')
@@ -76,10 +79,44 @@ class Menu():
             archivo.guardarLista(empleados)
             self.imprimirEmpleados()
 
+    def consultaEmpleado(self):
+        self.__db.consultaEmpleado()
+        self.menus()
+
+    def creadores(self):
+        print("--------------------------")
+        print("Jose Andres Orozco Estrada")
+        print("Roberto Arturo Esqueda Hernandez")
+        print("Luis Jesus Carrillo Perez")
+        print("Hector Agustin Castorena Castillo")
+        print("Julio Cesar Leija Ontiveros")
+        print("Carlos Eduardo Marentes Rios")
+        print("--------------------------")
+        self.menus()
+
+    def menus(self):
+        print("-----------------------------------")
+        print("1) Insertar Empleado")
+        print("2) Agregar Automovil a Empleado registrado")
+        print("3) Imprimir Empleado")
+        print("4) Imprimir Creadores")
+
+        op = input("Escoge una opcion: ")
+
+        if(op == "1"):
+            self.qNuevoEmpleado()
+        if(op == "2"):
+            self.consultaEmpleado()
+        if(op == "3"):
+            self.consultaEmpleado()
+        if(op == "4"):
+            self.creadores()          
 
     def run(self):
         # self.cargarArchivo()
-        self.qNuevoEmpleado()
-        self.imprimirEmpleados()
-        self.imprimirNomina()
+        # self.qNuevoEmpleado()
+        # self.imprimirEmpleados()
+        # self.imprimirNomina()
+        self.menus()
+
         # self.guardarArchivo(self.__venta.getEmpleados())

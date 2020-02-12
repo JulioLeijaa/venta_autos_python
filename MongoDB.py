@@ -4,7 +4,7 @@ class Mongo():
     def __init__(self):
         self.__MONGO_URI = 'mongodb://localhost'
         self.__client = MongoClient(self.__MONGO_URI)
-        self.__db = self.__client['ventas']
+        self.__db = self.__client['ventas_autos']
         self.__cEmpleados = self.__db['empleados']
 
     def insertarEmpleado(self, empleado):
@@ -27,3 +27,6 @@ class Mongo():
             "comision" : auto.getComision()
         })
         self.__cEmpleados.update_one({"_id" : self.__cEmpleados.find().count()},{"$set" : {"vVendidos" : lista, "bono" : bono, "comisiones" : comisiones}})
+
+    def cerrarConexion(self):
+        self.__client.close()
